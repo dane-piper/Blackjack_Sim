@@ -73,28 +73,48 @@ public class blackjack_trainer: MonoBehaviour
                 int indexer1 = Array.IndexOf(dealer_Upcard, up_card);
                 int indexer2 = Array.IndexOf(splits, player_count);
                 decision = split_action[indexer2, indexer1];
-                basic_strat.text = "Correct decision: " + (action) decision;
+                if (decision != player_action)
+                {
+                    basic_strat.text = "Wrong, Correct decision: " + (action)decision;
+                    basic_strat.enabled = true;
+                }
             }
             else if (is_soft)
             {
                 int indexer1 = Array.IndexOf(dealer_Upcard, up_card);
                 int indexer2 = Array.IndexOf(softs, player_count);
                 decision = soft_action[indexer2, indexer1];
-                basic_strat.text = "Correct decision: " + (action)decision;
+                if (decision != player_action)
+                {
+                    basic_strat.text = "Wrong, Correct decision: " + (action)decision;
+                    basic_strat.enabled = true;
+                }
             }
             else
             {
                 int indexer1 = Array.IndexOf(dealer_Upcard, up_card);
                 int indexer2 = Array.IndexOf(hards, player_count);
                 decision = hard_action[indexer2, indexer1];
-                basic_strat.text = "Correct decision: " + (action)decision;
+                if (decision != player_action)
+                {
+                    basic_strat.text = "Wrong, Correct decision: " + (action)decision;
+                    basic_strat.enabled = true;
+                }
             }
-            basic_strat.enabled = true;
+
         }
         catch (IndexOutOfRangeException e)
         {
-            basic_strat.text = "Correct decision: " + (action)1;
-            basic_strat.enabled = true;
+            if (player_count < 8 && player_action != 2)
+            {
+                basic_strat.text = "Wrong, Correct decision: " + (action)2;
+                basic_strat.enabled = true;
+            }
+            else if (player_count > 17 && player_action != 1)
+            {
+                basic_strat.text = "Wrong, Correct decision: " + (action)1;
+                basic_strat.enabled = true;
+            }
         }
         
     }

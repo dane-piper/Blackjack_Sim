@@ -7,6 +7,7 @@ using UnityEngine.XR;
 
 public class Player_Handler : MonoBehaviour
 {
+    public GameObject outcome;
     public TextMeshProUGUI basic_strat;
     public GameObject blackjack_trainer;
     public GameObject dealer;
@@ -19,6 +20,7 @@ public class Player_Handler : MonoBehaviour
     public List<Hand> completed_hands;
     public int player_count = 1;
     public List<GameObject> splits;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +44,7 @@ public class Player_Handler : MonoBehaviour
 
     public void initialize_wrapper()
     {
+        outcome.GetComponent<TextMeshProUGUI>().enabled = false;
         basic_strat.enabled = false;
         StartCoroutine(initialize());
     }
@@ -149,26 +152,41 @@ public class Player_Handler : MonoBehaviour
     {
         if (dealer.GetComponent<Hand>().busted)
         {
+            Debug.Log("Count: " + player_hand.count.ToString());
+            outcome.GetComponent<TextMeshProUGUI>().text = "Player Wins";
+            outcome.GetComponent<TextMeshProUGUI>().enabled = true;
             Debug.Log("Dealer Busts");
             return 1;
         }
         if (player_hand.busted)
         {
+            Debug.Log("Count: " + player_hand.count.ToString());
+            outcome.GetComponent<TextMeshProUGUI>().text = "Player Loses";
+            outcome.GetComponent<TextMeshProUGUI>().enabled = true;
             Debug.Log("Player Busts");
             return 2;
         }
         if (dealer.GetComponent<Hand>().count == player_hand.count)
         {
+            Debug.Log("Count: " + player_hand.count.ToString());
+            outcome.GetComponent<TextMeshProUGUI>().text = "Push";
+            outcome.GetComponent<TextMeshProUGUI>().enabled = true;
             Debug.Log("Push");
             return 3;
         }
         if (dealer.GetComponent<Hand>().count > player_hand.count)
         {
+            Debug.Log("Count: " + player_hand.count.ToString());
+            outcome.GetComponent<TextMeshProUGUI>().text = "Player Loses";
+            outcome.GetComponent<TextMeshProUGUI>().enabled = true;
             Debug.Log("Dealer wins");
             return 2;
         }
         else
         {
+            Debug.Log("Count: " + player_hand.count.ToString());
+            outcome.GetComponent<TextMeshProUGUI>().text = "Player Wins";
+            outcome.GetComponent<TextMeshProUGUI>().enabled = true;
             Debug.Log("Player Wins");
             return 1;
         }

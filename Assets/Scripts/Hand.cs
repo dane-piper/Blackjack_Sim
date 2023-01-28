@@ -102,6 +102,7 @@ public class Hand : MonoBehaviour
         {
             splitable = false;
         }
+       
     }
 
     public void Clear()
