@@ -72,7 +72,9 @@ public class blackjack_trainer: MonoBehaviour
             {
                 int indexer1 = Array.IndexOf(dealer_Upcard, up_card);
                 int indexer2 = Array.IndexOf(splits, player_count);
+                Debug.Log("indexer1: " + indexer1.ToString() + " indexer2: " + indexer2.ToString());
                 decision = split_action[indexer2, indexer1];
+                Debug.Log("Action: " + player_action.ToString() + " Correct decision: " + decision.ToString());
                 if (decision != player_action)
                 {
                     basic_strat.text = "Wrong, Correct decision: " + (action)decision;
@@ -83,7 +85,9 @@ public class blackjack_trainer: MonoBehaviour
             {
                 int indexer1 = Array.IndexOf(dealer_Upcard, up_card);
                 int indexer2 = Array.IndexOf(softs, player_count);
+                Debug.Log("indexer1: " + indexer1.ToString() + " indexer2: " + indexer2.ToString());
                 decision = soft_action[indexer2, indexer1];
+                Debug.Log("Action: " + player_action.ToString() + " Correct decision: " + decision.ToString());
                 if (decision != player_action)
                 {
                     basic_strat.text = "Wrong, Correct decision: " + (action)decision;
@@ -94,7 +98,13 @@ public class blackjack_trainer: MonoBehaviour
             {
                 int indexer1 = Array.IndexOf(dealer_Upcard, up_card);
                 int indexer2 = Array.IndexOf(hards, player_count);
+                Debug.Log("indexer1: " + indexer1.ToString() + " indexer2: " + indexer2.ToString());
                 decision = hard_action[indexer2, indexer1];
+                Debug.Log("Action: " + player_action.ToString() + " Correct decision: " + decision.ToString());
+                if (decision == 3 && player.GetComponent<Hand>().get_hand().Count > 2)
+                {
+                    decision = 2;
+                }
                 if (decision != player_action)
                 {
                     basic_strat.text = "Wrong, Correct decision: " + (action)decision;

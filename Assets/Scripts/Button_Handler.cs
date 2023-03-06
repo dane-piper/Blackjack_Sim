@@ -39,7 +39,7 @@ public class Button_Handler : MonoBehaviour
                 Split.GetComponent<Button>().interactable = false;
                 Double.GetComponent<Button>().interactable = false;
             }
-            else if (current_turn.GetComponent<Hand>().get_hand()[0].Value != current_turn.GetComponent<Hand>().get_hand()[1].Value)
+            else if (value_transform(current_turn.GetComponent<Hand>().get_hand()[0].Value) != value_transform(current_turn.GetComponent<Hand>().get_hand()[1].Value))
             {
                 Double.GetComponent<Button>().interactable = true;
                 Stand.GetComponent<Button>().interactable = true;
@@ -55,5 +55,20 @@ public class Button_Handler : MonoBehaviour
             }
         }
 
+    }
+    private int value_transform(int val)
+    {
+        if (val > 9 && val < 14)
+        {
+            return 10;
+        }
+        else if (val == 14)
+        {
+            return 11;
+        }
+        else
+        {
+            return val;
+        }
     }
 }

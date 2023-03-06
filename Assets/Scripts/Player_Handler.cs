@@ -26,12 +26,18 @@ public class Player_Handler : MonoBehaviour
     {
         turn = new Queue<GameObject> ();
         splits = new List<GameObject> ();
-        turn.Enqueue(player);
-        next_turn();
+        //turn.Enqueue(player);
+        initialize_wrapper();
+        //next_turn();
     }
 
     // Update is called once per frame
     void Update()
+    {
+        
+    }
+
+    private void Awake()
     {
         
     }
@@ -51,9 +57,11 @@ public class Player_Handler : MonoBehaviour
 
     IEnumerator initialize()
     {
+        clear();
+        Debug.Log("Count of turn list: " + turn.Count.ToString());
         turn.Enqueue(player);
         current_turn = turn.Dequeue();
-        clear();
+        Debug.Log("Count of turn list: " + turn.Count.ToString());
         for (int i = 0; i < 2; i++)
         {
             yield return new WaitForSeconds(0.5f);
@@ -81,7 +89,7 @@ public class Player_Handler : MonoBehaviour
 
     public void double_down()
     {
-        Add_Card(current_turn);
+        Add_Card(current_turn, true);
         next_turn();
     }
 
@@ -100,36 +108,39 @@ public class Player_Handler : MonoBehaviour
 
     public void next_turn()
     {
+        completed_hands.Add(current_turn.GetComponent<Hand>());
         if (turn.Count == 0)
         {
             current_turn = dealer;
-            dealer_turn();
+            StartCoroutine(dealer_turn());
 
         }
         else
         {
             current_turn = turn.Dequeue();
-            completed_hands.Add(current_turn.GetComponent<Hand>());
+            Debug.Log("Hand appended to current turn. Completed Hands: " + completed_hands.Count.ToString());
         }
         
     }
 
     void clear()
     {
-        player.transform.position = new Vector3(-0.43f, -0.73f, 0);
+        player.transform.position = new Vector3(-0.43f, -1.4f, 0);
         player.GetComponent<Hand>().Clear();
         dealer.GetComponent<Hand>().Clear();
-        if(splits.Count > 0)
-        {
-            foreach (GameObject split in splits)
-            {
-                Destroy(split);
-            }
-        }
+        completed_hands.Clear();
+        splits.Clear();
+        //if(splits.Count > 0)
+        //{
+        //    foreach (GameObject split in splits)
+        //    {
+        //        Destroy(split);
+        //    }
+        //}
 
     }
 
-    void dealer_turn()
+    IEnumerator dealer_turn()
     {
         dealer.GetComponent<Hand>().dealer_reveal();
         bool busted = is_busted();
@@ -137,6 +148,7 @@ public class Player_Handler : MonoBehaviour
         while (dealer.GetComponent<Hand>().count < 17 && !busted)
         {
             hit();
+            yield return new WaitForSeconds(0.5f);
         }
         if (dealer.GetComponent<Hand>().count > 21)
         {

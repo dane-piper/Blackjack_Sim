@@ -120,33 +120,26 @@ public class Hand : MonoBehaviour
     void hand_to_sprite(Card top_card, bool doubled = false)
     {
         Quaternion rotation = transform.rotation;
-        float offset = (hand.Count - 1) * 0.4f;
-        if (doubled)
+        float offset_x = (hand.Count - 1) * 0.6f;
+        float offset_y = (hand.Count - 1) * 0.4f;
+        Debug.Log(transform.position.x.ToString() + " " + transform.position.y.ToString());
+        if (doubled || dealer)
         {
-            rotation = Quaternion.Euler(0, 0, 90f);
-            GameObject doubled_card = Instantiate(card, new Vector3(transform.position.x + offset, transform.position.y - offset + 20, 0), rotation, transform);
-            doubled_card.GetComponent<attributes>().cards = top_card;
-            doubled_card.GetComponent<attributes>().initialize();
-            doubled_card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(top_card.Name);
-            doubled_card.GetComponent<SpriteRenderer>().sortingOrder = (hand.Count - 1);
-            sprite_list.Add(doubled_card);
+            offset_y = 0;
         }
-        else
-        {
-            GameObject current_card = Instantiate(card, new Vector3(transform.position.x + offset, transform.position.y + offset + 20, 0), rotation, transform);
-            current_card.GetComponent<attributes>().cards = top_card;
-            current_card.GetComponent<attributes>().initialize();
-            current_card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(top_card.Name);
-            current_card.GetComponent<SpriteRenderer>().sortingOrder = (hand.Count - 1);
-            sprite_list.Add(current_card);
-        }
-
+        GameObject current_card = Instantiate(card, new Vector3(transform.position.x + offset_x, (float)(transform.position.y + offset_y + 20), 0), rotation, transform);
+        current_card.GetComponent<Animator>().SetBool("doubled", doubled);
+        current_card.GetComponent<attributes>().cards = top_card;
+        current_card.GetComponent<attributes>().initialize();
+        current_card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(top_card.Name);
+        current_card.GetComponent<SpriteRenderer>().sortingOrder = (hand.Count - 1);
+        sprite_list.Add(current_card);
     }
 
     void dealer_hand_to_sprite(Card top_card)
     {
-        float offset = (hand.Count - 1) * 0.4f;
-        GameObject current_card = Instantiate(card, new Vector3(transform.position.x + offset, transform.position.y + offset + 20, 0), transform.rotation, transform);
+        float offset = (hand.Count - 1) * 0.6f;
+        GameObject current_card = Instantiate(card, new Vector3(transform.position.x + offset, (float)(transform.position.y + 20), 0), transform.rotation, transform);
         current_card.GetComponent<attributes>().cards = top_card;
         current_card.GetComponent<attributes>().initialize();
         current_card.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("card_back");
